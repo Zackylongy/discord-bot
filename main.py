@@ -32,20 +32,23 @@ async def check_alerts(input_alerts=None) -> None:
 
         tasks = []
         for alert in alerts:
+            if alert.get("name") != "BABYMETAL LEGEND MM":
+                continue
+
             if os.getenv("ENABLE_YAHOO_AUCTION", "true") == "true":
                 yahoo_checker = YahooAuctionsChecker(bot, alert)
                 task = asyncio.create_task(bound_check(semaphore, yahoo_checker.check_store))
                 tasks.append(task)
 
-            if os.getenv("ENABLE_MERCARI", "true") == "true":
-                mercari_checker = MercariChecker(bot, alert)
-                task = asyncio.create_task(bound_check(semaphore, mercari_checker.check_store))
-                tasks.append(task)
+            # if os.getenv("ENABLE_MERCARI", "true") == "true":
+            #     mercari_checker = MercariChecker(bot, alert)
+            #     task = asyncio.create_task(bound_check(semaphore, mercari_checker.check_store))
+            #     tasks.append(task)
          
-            if os.getenv("ENABLE_SURUGAYA", "true") == "true":
-                surugaya_checker = SurugayaChecker(bot, alert)
-                task = asyncio.create_task(bound_check(semaphore, surugaya_checker.check_store))
-                tasks.append(task)
+            # if os.getenv("ENABLE_SURUGAYA", "true") == "true":
+            #     surugaya_checker = SurugayaChecker(bot, alert)
+            #     task = asyncio.create_task(bound_check(semaphore, surugaya_checker.check_store))
+            #     tasks.append(task)
 
         if tasks:
             try:
